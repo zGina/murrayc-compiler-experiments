@@ -23,22 +23,22 @@
 #include <queue>
 #include <set>
 #include <vector>
-
 #include "state.h"
 
-using States = State::States;
 
+using States = State::States;
 /// Get any states reachable from the @a states s via a transition on @a c.
+// transition function ,in a set of states and char,out a set of states 
 static States
 delta(const States& q, State::char_t c) {
+  
   States result;
-
   for (const auto& s : q) {
     const auto sdest = s->next_states(c);
     if (sdest.empty()) {
       continue;
     }
-
+    
     result.insert(std::begin(sdest), std::end(sdest));
   }
 
@@ -57,15 +57,18 @@ delta(const States& q, State::char_t c) {
  */
 static States
 e_closure(const States& states) {
+
   // Start with the current states:
+  
   States result = states;
 
   // Add any states that can be reached via ε transitions.
   for (const auto& s : states) {
+
     const auto sdest = s->next_states_via_e();
     if (sdest.empty()) {
       continue;
-    }
+     }
 
     for (const auto& next : sdest) {
       if (result.count(next)) {
@@ -73,7 +76,7 @@ e_closure(const States& states) {
       }
 
       result.emplace(next);
-
+    
       // Recurse, to add other states reachable via a further ε transition.
       const auto further_states = e_closure({next});
       for (const auto& further : further_states) {
@@ -94,6 +97,7 @@ print_set(const States& states) {
   }
   std::cout << "}";
 }
+
 */
 
 /** Subset construction.
@@ -114,6 +118,7 @@ subset_construction(const std::shared_ptr<State>& n0) {
   while (!worklist.empty()) {
     // Remove a set q from the worklist:
     // Each q represents a valid configuration of the original NFA.
+
     auto q = worklist.front();
     worklist.pop();
 
@@ -192,8 +197,8 @@ from_q_to_d(const std::set<States>& Q,
   // std::cout << std::endl;
 
   // For each state di (identified by its distinct set of states qi),
-  // create a transition to another di, by matching the distinct set of states
-  // in q,
+  // create a transition to another di, by matching the distinct set
+  // of states in q,
   // that the states qi have a transition to.
   for (const auto& ti : T) {
     const auto& [p, qdest] = ti;
@@ -217,7 +222,8 @@ from_q_to_d(const std::set<States>& Q,
 
 /** Create a DFA from an NFA,
  * by identifying valid configurations
- * (sets of NFA states reachable from other sets of NFA states via transitions on particular characters)
+ * (sets of NFA states reachable from other
+ * sets of NFA states via transitions on particular characters)
  * and mapping them to DFA states.
  */
 static std::shared_ptr<State>
@@ -257,8 +263,7 @@ main() {
   {
     // The NFA from Figure 2.7 on page 51.
     auto n0 = std::make_shared<State>("n0");
-    auto n2 = n0->add('a', "n1")
-      ->add(State::E, "n2");
+    auto n2 = n0->add('a', "n1")->add(State::E, "n2");
     auto n3 = n2->add(State::E, "n3");
     auto n5 = n3->add(State::E, "n4")
       ->add('b', "n5");
