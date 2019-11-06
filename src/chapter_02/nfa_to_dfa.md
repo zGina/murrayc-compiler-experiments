@@ -1,11 +1,11 @@
 ## NFA to DFA
 
 #### Automaton
-An NFA is represented formally by a 5-tuple, ${\displaystyle (N,\Sigma ,\Delta ,n_0,N_A)}$, consisting of
+An NFA is represented formally by a 5-tuple, ${\displaystyle (N,\Sigma ,\delta ,n_0,N_A)}$, consisting of
 
 * a finite set of states $N$
 * a finite set of input symbols  $\Sigma$
-* a transition function $\Delta  : {\displaystyle N\times \Sigma \rightarrow P(N)}$
+* a transition function $\delta  : {\displaystyle N\times \Sigma \rightarrow P(N)}$
 * an initial (or start) state $n_{0}\in N$
 * a set of states $N_A$ distinguished as accepting (or final) states $N_A\subseteq N$
 ### core

@@ -73,11 +73,10 @@ split(const States& states, const Partitions& partitions) {
     for (const auto& s : states) {
       const auto next_states = s->next_states(c);
 
-      // We don't ignore empty next_states, because states with no transition on
-      // c
+      // We don't ignore empty next_states, because states
+      // with no transition on c
       // should be in their own partition, according to page 56.
       // (This also ensures that all the sets will be in the result.)
-
       // DFAs, by definition, have at most 1 transition per character per state:
       assert(next_states.size() <= 1);
 
@@ -92,8 +91,8 @@ split(const States& states, const Partitions& partitions) {
     // If the next states are in more than one partition,
     // return the states that lead to the partitions:
     // TODO: The example on page 56 splits off just one partition each time,
-    // but in step 2, this would split {s0, s1, s2, s4} into {{s0}, {s1}, {s2,
-    // s4}},
+    // but in step 2, this would split {s0, s1, s2, s4}
+    // into {{s0}, {s1}, {s2,s4}},
     // instead of the {{s0, s1}, {s2, s4} shown in the example.
     // That seems to be OK.
     if (states_by_next_partition.size() > 1) {
@@ -249,7 +248,6 @@ construct_states_from_partitions(
       // Add transitions to the new states that represent the transitioned-to
       // partitions.
       // (This part isn't really described in the book's test.)
-      //
       // TODO: Allow one transition to have multiple characters,
       // as in the diagrams in the book?
       for (const auto c : next_partition_chars) {
