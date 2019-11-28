@@ -40,9 +40,9 @@ p134 第三种方法
    - 为了简便，这里的输入：
 
    ```
-   S    - 第一行单独字符指明 start 字符
+   S     - 第一行单独字符指明 start 字符
    S->aAcBe
-   A->b      - 默认大写字母是非终端字符，其余为终端字符
+   A->b      - 默认大写字母是非终结符，其余为终结符
    A->Ab    - 以 -> 作为分隔符
    B->d
    ```
@@ -73,9 +73,9 @@ def load_CFG(filename):
     return LR_items,CFG
 ```
 
-2.  将拓广文法的第一个项目${S'->\cdot S}$作为初态集的核，通过求核的闭包和转换函数，求出项目集
+2.  将拓广文法的第一个项目$S'->\cdot S$ 作为初态集的核，通过求核的闭包和转换函数，求出项目集
 
-    1. 求闭包:$if A\rightarrow \alpha \cdot B \beta,then B \rightarrow \cdot \gamma $
+    1. 求闭包:$if A \rightarrow \alpha \cdot B \beta ,then B \rightarrow \cdot \gamma1$
        遍历当前项目集每一条产生式
 
     ```python
@@ -97,11 +97,11 @@ def load_CFG(filename):
     ```python
 
     def get_closure(char, LR0_item, CFG):
-        #若是终端字符
+        #若是终结符
         if not char.isupper():
             return
         else:
-        #非终端字符
+        #非终结符
             for i in range(0, len(CFG[char])):
                 rh = "." + CFG[char][i]
                 new=[char, rh]
@@ -180,16 +180,17 @@ def load_CFG(filename):
             print(lh+"->"+rh)
     ```
 
-至此，得到了活前缀 DFA。
+至此，得到了识别活前缀的 DFA。
 
 ![](imgs/items.png)
 
 ## 构造 LR(0)分析表
 
 p135 action 和 goto 不会冲突，在实际应用中直接将他们重叠，用同一数组元素表示
+
 遍历上述过程得到的项目集即可。
-其实每个项目集对象中`goto`以及`gotoitem`已经指明了分析表的转换。
-规约或结束状态的`goto`，`gotoitem`均为空。
+
+其实每个项目集对象中`goto`以及`gotoitem`已经指明了分析表的转换。其中规约或结束状态的`goto`，`gotoitem`均为空。
 
 ## 输入符号串进行分析
 
@@ -253,4 +254,3 @@ p135 action 和 goto 不会冲突，在实际应用中直接将他们重叠，�
 最后结果：
 
 ![](imgs/res.png) ![](imgs/res2.png)
-
